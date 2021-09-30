@@ -12,6 +12,5 @@ MarmotState Marmot::getState() const
         return MarmotState::MARMOT_IS_AWAKE;
     }
 
-    // Oh oh - we made a mistake here!
-    return MarmotState::MARMOT_IS_AWAKE;
+    return MarmotState::MARMOT_IS_SLEEPING;
 }

@@ -21,7 +21,9 @@ public:
 
     void SetUp() {}
 
-    void TearDown() {}
+    void TearDown() {
+        Mock::VerifyAndClearExpectations(&universe);
+    }
 };
 
 TEST_F(MarmotTest, When_Not_Winter_And_Day_Should_Be_Awake) {
@@ -35,18 +37,15 @@ TEST_F(MarmotTest, When_Not_Winter_And_Day_Should_Be_Awake) {
 TEST_F(MarmotTest, When_Winter_Should_Sleep) {
     Marmot marmot;
 
-    EXPECT_CALL(universe, IsWinter()).WillRepeatedly(Return(true)); // oh
+    EXPECT_CALL(universe, IsWinter()).WillRepeatedly(Return(true));
 
-    EXPECT_CALL(universe, IsDay()).WillOnce(Return(true));
-    ASSERT_EQ(MarmotState::MARMOT_IS_SLEEPING, marmot.getState());
-
-    EXPECT_CALL(universe, IsDay()).WillOnce(Return(false));
     ASSERT_EQ(MarmotState::MARMOT_IS_SLEEPING, marmot.getState());
 }
 
 TEST_F(MarmotTest, When_Night_Should_Sleep) {
     Marmot marmot;
 
+    EXPECT_CALL(universe, IsWinter()).WillOnce(Return(false));
     EXPECT_CALL(universe, IsDay()).WillOnce(Return(false));
     ASSERT_EQ(MarmotState::MARMOT_IS_SLEEPING, marmot.getState());
 }
